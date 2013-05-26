@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+
+	# Remove user/group
+	if [ -x /usr/sbin/deluser ] && id -u mailman-milter >/dev/null 2>&1; then
+		deluser --quiet mailman-milter
+	fi
+
+	# Remove /var/run/mailman-milter (don't complain if it's not empty)
+	rmdir /var/run/mailman-milter 2>/dev/null || true
+fi
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,5 @@
+mailman-milter (0.1-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Andrew Ayer <agwa@andrewayer.name>  Sun, 26 May 2013 09:32:14 -0700

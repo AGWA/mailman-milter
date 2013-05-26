@@ -1,0 +1,16 @@
+Source: mailman-milter
+Maintainer: Andrew Ayer <agwa@andrewayer.name>
+Section: mail
+Priority: extra
+Standards-Version: 3.9.1
+Build-Depends: debhelper (>= 8), make (>= 3.81-5), libc6-dev (>= 2.7-18), gcc (>= 4:4.3.2-2), coreutils (>= 6.10-6), libmilter-dev (>= 8.14.3-9.4)
+
+Package: mailman-milter
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, mailman, python (>= 2.4), adduser
+Description: Milter for checking Mailman posting rules
+ mailman-milter is a milter for Postfix or Sendmail that checks Mailman
+ posting rules for incoming mailing list posts. Messages that would be
+ rejected or discared by Mailman are rejected by the milter at SMTP
+ time. This reduces backscatter, since it's not necessary to accept the
+ message just to have Mailman bounce it.

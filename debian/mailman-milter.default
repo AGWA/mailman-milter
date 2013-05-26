@@ -1,0 +1,16 @@
+# Mailing lists whose policies you want to check.
+# You must specify at least one mailing list here for the milter to start.
+MAILING_LISTS=""
+
+# Path to the socket file. If you're using Postfix you may want
+# to put the socket file in /var/spool/postfix so it's accessible
+# even when Postfix is chroot'd.
+SOCKET=/var/run/mailman-milter/mailman-milter.sock
+#SOCKET=/var/spool/postfix/mailman-milter/mailman-milter.sock
+
+# Socket file permissions. You should ensure that only your MTA has
+# access to the socket file.
+SOCKET_MODE=660
+
+# Extra options to mailman-milter daemon
+DAEMON_OPTS=""

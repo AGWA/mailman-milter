@@ -1,0 +1,2 @@
+mailman-milter usr/sbin
+sender_action usr/lib/mailman/bin

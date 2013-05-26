@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+	# Create user/group
+	if ! id -u mailman-milter >/dev/null 2>&1; then
+		adduser --quiet --system --group --home /var/run/mailman-milter mailman-milter
+
+		# Add mailman-milter user to the list group
+		usermod -a -G list mailman-milter
+	fi
+
+	# Set ownership if the admin has not overridden it.
+	if ! dpkg-statoverride --list /var/run/mailman-milter >/dev/null; then
+		mkdir -p /var/run/mailman-milter;
+		chown mailman-milter:mailman-milter /var/run/mailman-milter;
+		chmod g+wrxs /var/run/mailman-milter;
+	fi
+fi
+
+#DEBHELPER#
+
+exit 0;
