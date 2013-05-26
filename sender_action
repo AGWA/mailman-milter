@@ -1,0 +1,104 @@
+#! /usr/bin/python
+
+#
+# Determine the moderation action of the given sender on a mailing list.
+#
+# Usage: sender_action.py LISTNAME FROMADDRESS
+#
+# Exit status:
+#  0 - accept
+#  65 - hold
+#  66 - reject
+#  67 - discard
+#  68 - indeterminate
+#
+# Any other exit status represents an error.
+#
+# This script should be installed in /usr/lib/mailman/bin.
+#
+
+import sys
+import email.header
+import email.utils
+import paths
+from Mailman import Errors
+from Mailman import MailList
+from Mailman import mm_cfg
+from Mailman.Handlers.Moderate import matches_p
+
+if len(sys.argv) != 3:
+	print >>sys.stderr, ('Usage: %s listaddress fromheader' % sys.argv[0])
+	sys.exit(2)
+
+listaddress = sys.argv[1]
+fromheader = sys.argv[2]
+
+# Allow the list to be specified as an email address, in which case we assume
+# the listname is the local-part (before the '@' sign).
+listname = listaddress.split('@', 2)[0]
+
+# Allow the from address to be specified as a From: header, which we parse
+fromaddrs = email.utils.getaddresses([fromheader])
+
+# Unfortunately we don't know how to handle messages with more than one From: address
+# (which is fortunately very unusual)
+if len(fromaddrs) != 1:
+	print >> sys.stderr, 'Message has more than one From: address so I don\'t know'
+	sys.exit(68)
+
+_, sender = fromaddrs[0]
+
+# Load the mailing list
+try:
+	mlist = MailList.MailList(listname, lock=0)
+except Errors.MMUnknownListError:
+	print >> sys.stderr, ('Unknown list: %s' % listname)
+	sys.exit(1)
+
+# First of all, is the poster a member or not?
+if mlist.isMember(sender):
+	# If the member's moderation flag is on, then perform the moderation
+	# action.
+	if mlist.getMemberOption(sender, mm_cfg.Moderate):
+		# Note that for member_moderation_action, 0==Hold, 1=Reject,
+		# 2==Discard
+		if mlist.member_moderation_action == 0:
+			action = 1
+		elif mlist.member_moderation_action == 1:
+			action = 2
+		elif mlist.member_moderation_action == 2:
+			action = 3
+		else:
+			assert 0, 'bad member_moderation_action'
+	else:
+		action = 0
+else:
+	# From here on out, we're dealing with non-members.
+	listname = mlist.internal_name()
+	if matches_p(sender, mlist.accept_these_nonmembers, listname):
+		action = 0
+	elif matches_p(sender, mlist.hold_these_nonmembers, listname):
+		action = 1
+	elif matches_p(sender, mlist.reject_these_nonmembers, listname):
+		action = 2
+	elif matches_p(sender, mlist.discard_these_nonmembers, listname):
+		action = 3
+	else:
+		# Okay, so the sender wasn't specified explicitly by any of the non-member
+		# moderation configuration variables.  Handle by way of generic non-member
+		# action.
+		assert 0 <= mlist.generic_nonmember_action <= 3, 'bad generic_nonmember_action'
+		action = mlist.generic_nonmember_action
+if action == 0:
+	print "accept"
+	sys.exit(0)
+if action == 1:
+	print "hold"
+	sys.exit(65)
+if action == 2:
+	print "reject"
+	sys.exit(66)
+if action == 3:
+	print "discard"
+	sys.exit(67)
+

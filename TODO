@@ -1,0 +1,3 @@
+More flexible way to specify mailing lists, e.g. with regex
+	so you could do .*@lists.example.com for example
+implement multiple-from logic in sender_action (low priority b/c this is such an unusual use case)
