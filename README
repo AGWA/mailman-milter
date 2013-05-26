@@ -2,7 +2,7 @@ ABOUT MAILMAN-MILTER
 
 mailman-milter is a milter for Postfix or Sendmail that checks Mailman
 posting rules for incoming mailing list posts. Messages that would be
-rejected or discared by Mailman are instead rejected by the milter at
+rejected or discarded by Mailman are instead rejected by the milter at
 SMTP time. This reduces backscatter, since it's not necessary to accept
 the message just to have Mailman bounce it.
 
