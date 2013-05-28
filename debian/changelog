@@ -1,3 +1,9 @@
+mailman-milter (0.1-2) unstable; urgency=low
+
+  * Fix FTBFS on Wheezy.
+
+ -- Andrew Ayer <agwa@andrewayer.name>  Tue, 28 May 2013 10:52:58 -0700
+
 mailman-milter (0.1-1) unstable; urgency=low
 
   * Initial release.
