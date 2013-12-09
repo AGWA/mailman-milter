@@ -1,3 +1,10 @@
+mailman-milter (0.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Use debhelper 9.
+
+ -- Andrew Ayer <agwa@andrewayer.name>  Sun, 08 Dec 2013 19:46:10 -0800
+
 mailman-milter (0.1-2) unstable; urgency=low
 
   * Fix FTBFS on Wheezy.
