@@ -16,6 +16,6 @@ clean:
 	rm -f *.o $(PROGRAMS)
 
 install:
-	install -m 755 $(PROGRAMS) $(PREFIX)/sbin/
+	install -m 755 $(PROGRAMS) $(DESTDIR)$(PREFIX)/sbin/
 
 .PHONY: all clean install
