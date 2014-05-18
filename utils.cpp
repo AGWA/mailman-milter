@@ -101,7 +101,7 @@ void daemonize (const std::string& pid_file, const std::string& stderr_file)
 	}
 	if (pid != 0) {
 		// Exit parent
-		std::exit(0);
+		_exit(0);
 	}
 	setsid();
 
