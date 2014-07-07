@@ -10,7 +10,7 @@ OBJFILES = mailman-milter.o utils.o
 all: $(PROGRAMS)
 
 mailman-milter: $(OBJFILES)
-	$(CXX) $(CXXLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) $(CXXLAGS) -o $@ $(OBJFILES) $(LDFLAGS)
 
 clean:
 	rm -f *.o $(PROGRAMS)
