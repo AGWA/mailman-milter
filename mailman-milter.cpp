@@ -24,6 +24,7 @@
 #include <memory>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 #include <cstdio>
 #include <cstdlib>
 #include <stddef.h>
